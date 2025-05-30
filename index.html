@@ -109,12 +109,38 @@
    .refresh-title{
     padding: 0 10px;
    }
+   .relative{
+    position: relative;
+   }
+   .circle1{
+    position: absolute;
+    background-color: rgb(61, 62, 82);
+    height: 15px;
+    width: 15px;
+    left: -7.5px;
+    border-radius:50%;
+    bottom: -7.5px;
+   }
+   .circle2{
+    position: absolute;
+    background-color: rgb(61, 62, 82);
+    height: 15px;
+    width: 15px;
+    right: -7.5px;
+    border-radius:50%;
+    bottom: -7.5px;
+   }
 </style>
 </head>
 <body>
 <div class="header">WVN498(Nguyễn Trần Ngọc)</div>
 <div class="card">
-<div class="card-header">将二维码对准扫描器扫码出场</div>
+<div class="card-header relative">
+  <p>将二维码对准扫描器扫码出场</p>
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+</div>
+
 <div class="card-body">
 <div class="time" id="currentTime">--</div>
 <div id="qrcode">
