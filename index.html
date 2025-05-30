@@ -30,7 +30,7 @@
    .header {
      margin-top: 40px;
      font-size: 18px;
-     color: #f5d68a;
+     color: #E4BE5D;
    }
    .card {
      margin-top: 20px;
@@ -61,9 +61,9 @@
      margin: auto;
      width: 230px;
      height: 230px;
+     image-rendering: pixelated;
    }
    .refresh {
-    display: flex;
     align-items: center;
     justify-content: center;
      font-size: 14px;
@@ -117,10 +117,10 @@
 <div class="card-header">将二维码对准扫描器扫码出场</div>
 <div class="card-body">
 <div class="time" id="currentTime">--</div>
-<div id="qrcode"></div>
+<div id="qrcode">
+</div>
 <div class="refresh">
-  <p onclick="generateQRCode(event)" class="refresh-title">申请离场</p>
-  <p class="refresh-title">刷新二维码</p>
+  <p  onclick="generateQRCode(event)" class="refresh-title">刷新二维码</p>
 </div>
 <div class="status">已生效</div>
 <div class="valid-time" id="validTime">--</div>
@@ -148,34 +148,43 @@
      document.getElementById('validTime').textContent = validTimeStr;
    }
    function generateQRCode(event) {
-    if (event && event.currentTarget) {
-        event.currentTarget.blur();
-      }
-  // Tạo dữ liệu URL với id ngẫu nhiên
-  const randomId = Math.floor(Math.random() * 1000000);
-  const data = "https://example.com/entry?id=" + randomId;
-  
-  // Lấy phần tử chứa QR Code và xóa nội dung cũ
-  const qrcodeElement = document.getElementById('qrcode');
-  qrcodeElement.innerHTML = '';
-  
-  // Cấu hình QR Code với các thông số tùy chỉnh:
-  // - Giữ kích thước hiển thị 200x200px.
-  // - Ép mở phiên bản QR cụ thể thông qua thuộc tính typeNumber (ví dụ: 4 cho 33x33 module).
-  // Lưu ý: Nếu thư viện QRCode bạn đang dùng không hỗ trợ thuộc tính này, cân nhắc sử dụng
-  // một thư viện khác cho phép chỉ định phiên bản QR.
-  const options = {
-    text: data,
-    width: 200,
-    height: 200,
-    colorDark: "#000000",
-    colorLight: "#ffffff",
-    correctLevel: QRCode.CorrectLevel.H,
-    typeNumber: 40  // Ép QR Code dùng phiên bản 4 thay vì tự động chọn.
-  };
-  
-  new QRCode(qrcodeElement, options);
-}
+            if (event && event.currentTarget) {
+                event.currentTarget.blur(); // Bỏ focus khỏi nút
+            }
+
+            // Dữ liệu mẫu (có thể thay đổi để phản ánh thông tin thực tế)
+            // Lấy thời gian hiện tại
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const formattedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+            // Đây là phần dữ liệu chính bạn muốn mã hóa
+            // Càng dài, mã QR càng phức tạp
+            const employeeId = "V2502020040";
+            const employeeName = "Marc Nguyen";
+            const uniqueToken = Math.random().toString(36).substring(2) + Date.now().toString(36); // Token ngẫu nhiên
+            const accessData = `https://yourcompany.com/access?id=${employeeId}&name=${encodeURIComponent(employeeName)}&time=${encodeURIComponent(formattedTime)}&token=${uniqueToken}`;
+            const qrcodeElement = document.getElementById('qrcode');
+            qrcodeElement.innerHTML = ''; // Xóa mã QR cũ
+
+            // Tạo mã QR với kích thước lớn hơn để có độ chi tiết cao
+            // Dù hiển thị 250px, nó được vẽ ban đầu với 400px để có nhiều "ô vuông" hơn
+            new QRCode(qrcodeElement, {
+                text: accessData,
+                width: 200, // Kích thước gốc của mã QR (độ phân giải cao)
+                height: 200, // Kích thước gốc của mã QR (độ phân giải cao)
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H // Mức độ sửa lỗi cao (Error Correction Level H)
+            });
+
+
+        }
 
    // Initial
    updateTime();
@@ -184,7 +193,7 @@
    // Update every second
    setInterval(updateTime, 1000);
    setInterval(updateValidTime, 1000);
-  function fadeElement(selector, speed = 0.008) {
+  function fadeElement(selector, speed = 0.02) {
   const element = document.querySelector(selector);
   if (!element) {
     console.error("Không tìm thấy phần tử với selector:", selector);
