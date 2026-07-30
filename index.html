@@ -70,8 +70,8 @@
 
         #qrcode {
             margin: auto;
-            width: 230px;
-            height: 230px;
+            width: 270px;
+            height: 270px;
             image-rendering: pixelated;
         }
 
@@ -115,8 +115,8 @@
         }
 
         img {
-            width: 230px;
-            height: 230px;
+            width: 270px;
+            height: 270px;
         }
 
         .refresh-title {
@@ -199,8 +199,8 @@
             const seconds = String(now.getSeconds()).padStart(2, '0');
             const formattedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
-            const employeeId = "V23050104";
-            const employeeName = "Nguyen Tran Ngoc";
+            const employeeId = "WVN498";
+            const employeeName = "Nguyễn Trần Ngọc";
             const uniqueToken = Math.random().toString(36).substring(2) + Date.now().toString(36);
             const accessData =
                 `https://Wistron.com/access?id=${employeeId}&name=${encodeURIComponent(employeeName)}&time=${encodeURIComponent(formattedTime)}&token=${uniqueToken}`;
@@ -211,8 +211,8 @@
             } else {
                 qrCodeInstance = new QRCode(qrcodeElement, {
                     text: accessData,
-                    width: 230,
-                    height: 230,
+                    width: 270,
+                    height: 270,
                     colorDark: "#000000",
                     colorLight: "#ffffff",
                     correctLevel: QRCode.CorrectLevel.H
